@@ -5,27 +5,20 @@ class ThrottlerSimultaneous:
     """
     Context manager for limiting simultaneous count of accessing to context block.
 
-    Example usage:
-        async def request(t: ThrottlerSimultaneous):
-            async with t:
-                return await send_request()
+    Should be created inside of async loop.
 
-        async def run():
-            t = ThrottlerSimultaneous(count=50)
-
-            coros = [request(t) for _ in range(1000)]
-            for coro in asyncio.as_completed(coros):
-                result = await coro
-                print(result)
+    Example usages:
+        - https://github.com/uburuntu/throttler/blob/master/examples/example_throttlers.py
+        - https://github.com/uburuntu/throttler/blob/master/examples/example_throttlers_aiohttp.py
     """
 
-    __slots__ = ('semaphore',)
+    __slots__ = ('_semaphore',)
 
     def __init__(self, count: int):
-        self.semaphore = asyncio.Semaphore(count)
+        self._semaphore = asyncio.Semaphore(count)
 
     async def __aenter__(self):
-        await self.semaphore.acquire()
+        await self._semaphore.acquire()
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
-        self.semaphore.release()
+        self._semaphore.release()

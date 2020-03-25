@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Callable
 
 
 class Timer:
@@ -6,22 +7,17 @@ class Timer:
     Context manager for printing start, end, elapsed and average times.
 
     Example usage:
-        timer = Timer()
-        planner = TimePlanner(5, align_sleep=True)
-
-        while True:
-            with timer, planner:
-                pass
+        - https://github.com/uburuntu/throttler/blob/master/examples/example_timer.py
     """
 
-    def __init__(self, name: str = None, printer=None, verbose: bool = False):
+    def __init__(self, name: str = None, verbose: bool = False, print_func: Callable = None):
         self.iteration = 1
         self.start_dt = None
         self.elapsed_all = 0.
 
         self.name = name
         self.verbose = verbose
-        self.print = printer or print
+        self.print = print_func or print
 
     def __enter__(self):
         self.start_dt = datetime.now()

@@ -2,17 +2,15 @@ import asyncio
 import time
 
 
-class TimeManager:
+class ExecutionTimer:
     """
     Context manager for time limiting of accessing to context block.
-    Simply sleeping `period` secs before next accessing, not analog of Throttler.
+    Simply sleep `period` secs before next accessing, not analog of Throttler.
 
     Example usage:
-        t = TimePlanner(60, align_sleep=True)
-        while True:
-            with t:
-                print(time.asctime(), time.time())
+        - https://github.com/uburuntu/throttler/blob/master/examples/example_execution_timer.py
     """
+    __slots__ = ('_period', '_align_sleep', '_start_time', '_next_time',)
 
     def __init__(self, period: float = 60., align_sleep: bool = False):
         self._period = period
