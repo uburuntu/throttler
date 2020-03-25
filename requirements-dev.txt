@@ -1,2 +1,5 @@
 aiohttp
+codecov
 pytest
+pytest-asyncio
+pytest-cov
