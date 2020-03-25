@@ -14,7 +14,7 @@ setuptools.setup(
     author='uburuntu',
     author_email='bekbulatov.ramzan@ya.ru',
     url='https://github.com/uburuntu/throttler',
-    description='Simple throttling with asyncio support',
+    description='Zero-dependency Python package for simple throttling with asyncio support',
     long_description=read('readme.md'),
     long_description_content_type="text/markdown",
     download_url='https://github.com/uburuntu/throttler/archive/master.zip',

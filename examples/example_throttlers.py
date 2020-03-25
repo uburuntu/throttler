@@ -13,7 +13,7 @@ async def many_tasks(throttler, count: int):
     coros = [task(throttler) for _ in range(count)]
     for coro in asyncio.as_completed(coros):
         _result = await coro
-        print(f'{int(time.time())}')
+        print(f'Timestamp: {time.time()}')
 
 
 def example():

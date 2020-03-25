@@ -4,11 +4,24 @@
 [![PyPI](https://img.shields.io/pypi/v/throttler.svg)](https://pypi.python.org/pypi/throttler)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/uburuntu/throttler/blob/master/LICENSE)
 
-Python package for simple throttling with asyncio support.
+[![Build Status](https://travis-ci.org/uburuntu/throttler.svg?branch=master)](https://travis-ci.org/uburuntu/throttler)
+[![codecov](https://codecov.io/gh/uburuntu/throttler/branch/master/graph/badge.svg)](https://codecov.io/gh/uburuntu/throttler)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/82679eb03912475c8f7d14ee76ebf96e)](https://app.codacy.com/manual/uburuntu/throttler?utm_source=github.com&utm_medium=referral&utm_content=uburuntu/throttler&utm_campaign=Badge_Grade_Dashboard)
 
-## 🎨 Features
+Zero-dependency Python package for simple throttling with asyncio support.
 
-TODO
+## 📝 Table of Contents
+
+- 🎒 [Install](#-install)
+- 🛠 [Usage Examples](#-usage-examples)
+  - [Throttler and ThrottlerSimultaneous](#throttler-and-throttlersimultaneous)
+    - [Simple Example](#simple-example)
+    - [API Example](#api-example)
+  - [ExecutionTimer](#executiontimer)
+  - [Timer](#timer)
+- 👨🏻‍💻 [Author](#-author)
+- 💬 [Contributing](#-contributing)
+- 📝 [License](#-license)
 
 ## 🎒 Install
 
@@ -17,16 +30,228 @@ Just
 pip install throttler
 ```
 
-## 🛠 Usage
+## 🛠 Usage Examples
+All run-ready examples are [here](examples).
 
-TODO
+### Throttler and ThrottlerSimultaneous
+**Throttler**:
+> Context manager for limiting rate of accessing to context block.
+
+```python
+from throttler import Throttler
+
+# Limit to three calls per second
+t = Throttler(rate_limit=3, period=1.0)
+async with t:
+    pass
+```
+Or
+```python
+import asyncio
+
+from throttler import throttle
+
+# Limit to three calls per second
+@throttle(rate_limit=3, period=1.0)
+async def task():
+    return await asyncio.sleep(0.1)
+```
+
+**ThrottlerSimultaneous**:
+> Context manager for limiting simultaneous count of accessing to context block.
+
+```python
+from throttler import ThrottlerSimultaneous
+
+# Limit to five simultaneous calls
+t = ThrottlerSimultaneous(count=5)
+async with t:
+    pass
+```
+Or
+```python
+import asyncio
+
+from throttler import throttle_simultaneous
+
+# Limit to five simultaneous calls
+@throttle_simultaneous(count=5)
+async def task():
+    return await asyncio.sleep(0.1)
+```
+
+#### Simple Example
+```python
+import asyncio
+import time
+
+from throttler import throttle
+
+
+# Limit to two calls per second
+@throttle(rate_limit=2, period=1.0)
+async def task():
+    return await asyncio.sleep(0.1)
+
+
+async def many_tasks(count: int):
+    coros = [task() for _ in range(count)]
+    for coro in asyncio.as_completed(coros):
+        _ = await coro
+        print(f'Timestamp: {time.time()}')
+
+asyncio.run(many_tasks(10))
+```
+
+Result output:
+```text
+Timestamp: 1585183394.8141203
+Timestamp: 1585183394.8141203
+Timestamp: 1585183395.830335
+Timestamp: 1585183395.830335
+Timestamp: 1585183396.8460555
+Timestamp: 1585183396.8460555
+...
+```
+
+#### API Example
+
+```python
+import asyncio
+import time
+
+import aiohttp
+
+from throttler import Throttler, ThrottlerSimultaneous
+
+
+class SomeAPI:
+    api_url = 'https://example.com'
+
+    def __init__(self, throttler):
+        self.throttler = throttler
+
+    async def request(self, session: aiohttp.ClientSession):
+        async with self.throttler:
+            async with session.get(self.api_url) as resp:
+                return resp
+
+    async def many_requests(self, count: int):
+        async with aiohttp.ClientSession() as session:
+            coros = [self.request(session) for _ in range(count)]
+            for coro in asyncio.as_completed(coros):
+                response = await coro
+                print(f'{int(time.time())} | Result: {response.status}')
+
+
+async def run():
+    # Throttler can be of any type
+    t = ThrottlerSimultaneous(count=5)        # Five simultaneous requests
+    t = Throttler(rate_limit=10, period=3.0)  # Ten requests in three seconds
+
+    api = SomeAPI(t)
+    await api.many_requests(100)
+
+asyncio.run(run())
+```
+
+Result output:
+```text
+1585182908 | Result: 200
+1585182908 | Result: 200
+1585182908 | Result: 200
+1585182909 | Result: 200
+1585182909 | Result: 200
+1585182909 | Result: 200
+1585182910 | Result: 200
+1585182910 | Result: 200
+1585182910 | Result: 200
+...
+```
+
+### ExecutionTimer
+> Context manager for time limiting of accessing to context block. Simply sleep `period` secs before next accessing, not analog of `Throttler`. Also it can align to start of minutes.
+
+```python
+import time
+
+from throttler import ExecutionTimer
+
+et = ExecutionTimer(60, align_sleep=True)
+
+while True:
+    with et:
+        print(time.asctime(), '|', time.time())
+```
+
+Or
+```python
+import time
+
+from throttler import execution_timer
+
+@execution_timer(60, align_sleep=True)
+def f():
+    print(time.asctime(), '|', time.time())
+
+while True:
+    f()
+```
+
+Result output:
+```text
+Thu Mar 26 00:56:17 2020 | 1585173377.1203406
+Thu Mar 26 00:57:00 2020 | 1585173420.0006166
+Thu Mar 26 00:58:00 2020 | 1585173480.002517
+Thu Mar 26 00:59:00 2020 | 1585173540.001494
+```
+
+### Timer
+> Context manager for pretty printing start, end, elapsed and average times.
+
+```python
+import random
+import time
+
+from throttler import Timer
+
+timer = Timer('My Timer', verbose=True)
+
+for _ in range(3):
+    with timer:
+        time.sleep(random.random())
+```
+
+Or
+```python
+import random
+import time
+
+from throttler import timer
+
+@timer('My Timer', verbose=True)
+def f():
+    time.sleep(random.random())
+
+for _ in range(3):
+    f()
+```
+
+Result output:
+```text
+#1 | My Timer | begin: 2020-03-26 01:46:07.648661
+#1 | My Timer |   end: 2020-03-26 01:46:08.382135, elapsed: 0.73 sec, average: 0.73 sec
+#2 | My Timer | begin: 2020-03-26 01:46:08.382135
+#2 | My Timer |   end: 2020-03-26 01:46:08.599919, elapsed: 0.22 sec, average: 0.48 sec
+#3 | My Timer | begin: 2020-03-26 01:46:08.599919
+#3 | My Timer |   end: 2020-03-26 01:46:09.083370, elapsed: 0.48 sec, average: 0.48 sec
+```
 
 ## 👨🏻‍💻 Author
 
 **Ramzan Bekbulatov**:
-* Telegram: [@rm_bk](https://t.me/rm_bk)
-* Github: [@uburuntu](https://github.com/uburuntu)
-* LinkedIn: [@rmbk](https://linkedin.com/in/rmbk)
+- Telegram: [@rm_bk](https://t.me/rm_bk)
+- Github: [@uburuntu](https://github.com/uburuntu)
 
 ## 💬 Contributing
 

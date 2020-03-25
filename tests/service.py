@@ -17,7 +17,7 @@ async def sleeper(value: float):
 class Service:
     def __init__(self, rate_limit: int, period: float):
         self.rate_limit = rate_limit
-        self.period = period
+        self.period = period - 0.01
 
         self.times = deque((0.,) * rate_limit)
 

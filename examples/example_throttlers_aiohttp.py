@@ -27,7 +27,7 @@ class SomeAPI:
 
 def example():
     async def run():
-        api = SomeAPI(Throttler(rate_limit=10, period=3.0))
+        api = SomeAPI(Throttler(rate_limit=3, period=1.0))
         await api.many_requests(100)
 
     asyncio.run(run())

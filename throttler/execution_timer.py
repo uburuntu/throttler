@@ -6,6 +6,7 @@ class ExecutionTimer:
     """
     Context manager for time limiting of accessing to context block.
     Simply sleep `period` secs before next accessing, not analog of Throttler.
+    Also it can align to start of minutes.
 
     Example usage:
         - https://github.com/uburuntu/throttler/blob/master/examples/example_execution_timer.py

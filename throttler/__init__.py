@@ -3,4 +3,6 @@ from .throttler import Throttler
 from .throttler_simultaneous import ThrottlerSimultaneous
 from .timer import Timer
 
-__version__ = '0.1'
+from .decorators import execution_timer, execution_timer_async, throttle, throttle_simultaneous, timer, timer_async
+
+__version__ = '1.1'

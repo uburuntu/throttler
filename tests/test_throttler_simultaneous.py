@@ -3,7 +3,7 @@ import asyncio
 import pytest
 
 from tests.service import ServiceSimultaneous
-from throttler import ThrottlerSimultaneous
+from throttler import throttle_simultaneous
 
 
 class TestThrottlerSimultaneous:
@@ -12,11 +12,10 @@ class TestThrottlerSimultaneous:
     )
     def test_via_service_simultaneous(self, max_simultaneous: int, count: int):
         s = ServiceSimultaneous(max_simultaneous)
-        t = ThrottlerSimultaneous(max_simultaneous)
 
+        @throttle_simultaneous(max_simultaneous)
         async def request(value: float):
-            async with t:
-                return await s.get(value)
+            return await s.get(value)
 
         main = asyncio.gather(*[request(v) for v in range(count)])
         asyncio.get_event_loop().run_until_complete(main)
