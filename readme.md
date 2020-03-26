@@ -10,6 +10,8 @@
 
 Zero-dependency Python package for simple throttling with asyncio support.
 
+> ![Demo](https://i.imgur.com/4XrAFMC.gif)
+
 ## 📝 Table of Contents
 
 - 🎒 [Install](#-install)
