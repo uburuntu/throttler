@@ -15,7 +15,7 @@ class TestExecutionTimer:
         def t():
             curr_ts = time.time()
             if i > 0:
-                assert isclose(curr_ts - prev_ts, period, abs_tol=0.01)
+                assert isclose(curr_ts - prev_ts, period, abs_tol=0.1)
             return curr_ts
 
         prev_ts = None
@@ -30,9 +30,9 @@ class TestExecutionTimer:
         def t():
             curr_ts = time.time()
             if i > 0:
-                assert isclose(curr_ts % period, 0., abs_tol=0.01)
+                assert isclose(curr_ts % period, 0., abs_tol=0.1)
                 if i > 1:
-                    assert isclose(curr_ts - prev_ts, period, abs_tol=0.01)
+                    assert isclose(curr_ts - prev_ts, period, abs_tol=0.1)
             return curr_ts
 
         prev_ts = None
@@ -48,7 +48,7 @@ class TestExecutionTimer:
         async def t():
             curr_ts = time.time()
             if i > 0:
-                assert isclose(curr_ts - prev_ts, period, abs_tol=0.01)
+                assert isclose(curr_ts - prev_ts, period, abs_tol=0.1)
             return curr_ts
 
         prev_ts = None
@@ -64,9 +64,9 @@ class TestExecutionTimer:
         async def t():
             curr_ts = time.time()
             if i > 0:
-                assert isclose(curr_ts % period, 0., abs_tol=0.01)
+                assert isclose(curr_ts % period, 0., abs_tol=0.1)
                 if i > 1:
-                    assert isclose(curr_ts - prev_ts, period, abs_tol=0.01)
+                    assert isclose(curr_ts - prev_ts, period, abs_tol=0.1)
             return curr_ts
 
         prev_ts = None
