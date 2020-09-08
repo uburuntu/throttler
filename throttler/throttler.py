@@ -17,21 +17,18 @@ class Throttler:
         self._rate_limit = rate_limit
         self._period = period
 
-        self._times = deque()
+        self._times = deque(0. for _ in range(rate_limit))
 
     async def __aenter__(self):
         while True:
             curr_ts = time.monotonic()
-            if len(self._times) < self._rate_limit:
-                break
-
-            diff = curr_ts - (self._times[-1] + self._period)
+            diff = curr_ts - (self._times[0] + self._period)
             if diff > 0.:
-                self._times.pop()
+                self._times.popleft()
                 break
-            await asyncio.sleep(diff)
+            await asyncio.sleep(-diff)
 
-        self._times.appendleft(curr_ts)
+        self._times.append(curr_ts)
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         pass
