@@ -10,4 +10,4 @@ __author__ = 'uburuntu'
 __email__ = 'github@rmbk.me'
 
 __license__ = 'MIT'
-__version__ = '1.1.3'
+__version__ = '1.2.0'

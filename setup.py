@@ -1,19 +1,22 @@
+import importlib.util
 import os
-from importlib.machinery import SourceFileLoader
+import sys
 
 import setuptools
 from pkg_resources import parse_requirements
 
-module_name = 'throttler'
 
-module = SourceFileLoader(
-    module_name, os.path.join(module_name, '__init__.py')
-).load_module()
-
-
-def read(filename):
-    with open(filename) as file:
+def read(filename: str) -> str:
+    with open(filename, encoding='utf-8') as file:
         return file.read()
+
+
+def get_module(name: str):
+    spec = importlib.util.spec_from_file_location(name, os.path.join(name, '__init__.py'))
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[name] = module
+    spec.loader.exec_module(module)
+    return module
 
 
 def load_requirements(filename: str) -> list:
@@ -26,6 +29,9 @@ def load_requirements(filename: str) -> list:
     return requirements
 
 
+module_name = 'throttler'
+module = get_module(module_name)
+
 setuptools.setup(
     name=module_name,
     version=module.__version__,
@@ -36,13 +42,13 @@ setuptools.setup(
     platforms='all',
     long_description=read('readme.md'),
     long_description_content_type='text/markdown',
-    url='https://github.com/uburuntu/throttler',
-    download_url='https://github.com/uburuntu/throttler/archive/master.zip',
-    packages=['throttler'],
-    requires_python='>=3.6',
+    url='https://github.com/uburuntu/{}'.format(module_name),
+    download_url='https://github.com/uburuntu/{}/archive/master.zip'.format(module_name),
+    packages=setuptools.find_packages(exclude=['examples', 'tests']),
     install_requires=[],
     extras_require={'dev': load_requirements('requirements-dev.txt')},
-    keywords=['throttle', 'rate limit'],
+    keywords=['asyncio', 'aio-throttle', 'aiothrottle', 'aiothrottler', 'aiothrottling',
+              'asyncio-throttle', 'rate-limit', 'rate-limiter', 'throttling', 'throttle', 'throttler'],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Framework :: AsyncIO',
