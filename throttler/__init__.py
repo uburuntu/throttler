@@ -1,4 +1,4 @@
-"""Zero-dependency Python package for simple throttling with asyncio support"""
+"""Zero-dependency Python package for easy throttling with asyncio support"""
 from .execution_timer import ExecutionTimer
 from .throttler import Throttler
 from .throttler_simultaneous import ThrottlerSimultaneous

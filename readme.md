@@ -8,7 +8,7 @@
 [![codecov](https://codecov.io/gh/uburuntu/throttler/branch/master/graph/badge.svg)](https://codecov.io/gh/uburuntu/throttler)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/82679eb03912475c8f7d14ee76ebf96e)](https://app.codacy.com/manual/uburuntu/throttler?utm_source=github.com&utm_medium=referral&utm_content=uburuntu/throttler&utm_campaign=Badge_Grade_Dashboard)
 
-Zero-dependency Python package for simple throttling with asyncio support.
+Zero-dependency Python package for easy throttling with asyncio support.
 
 > ![Demo](https://i.imgur.com/MyAALZt.gif)
 
