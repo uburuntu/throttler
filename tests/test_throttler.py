@@ -4,10 +4,18 @@ from itertools import product
 import pytest
 
 from tests.service import Service
-from throttler import throttle
+from throttler import throttle, Throttler
 
 
 class TestThrottler:
+    @pytest.mark.parametrize(
+        ('rate_limit', 'period'),
+        tuple(product((-1, 0, '', 1), (-1, -1., 0, 0., '')))
+    )
+    def test_exceptions(self, rate_limit: int, period: float):
+        with pytest.raises(ValueError):
+            Throttler(rate_limit, period)
+
     @pytest.mark.parametrize(
         ('rate_limit', 'period', 'count'),
         tuple(product((1, 3, 5), (0.5, 1.0, 1.5), (3, 5, 7))) +
