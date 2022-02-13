@@ -1,5 +1,5 @@
-aiohttp>=3.6
-codecov>=2.0
-pytest>=5.4
-pytest-asyncio>=0.12
-pytest-cov>=2.8
+aiohttp>=3.8
+codecov>=2.1
+pytest>=7.0
+pytest-asyncio>=0.18
+pytest-cov>=3.0

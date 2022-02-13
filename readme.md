@@ -1,12 +1,11 @@
 # Throttler
 
-[![Python](https://img.shields.io/badge/Python-3.6%20%7C%203.7%20%7C%203.8-blue.svg?longCache=true)]()
+[![Python](https://img.shields.io/badge/Python-3.6%20%7C%203.7%20%7C%203.8%20%7C%203.9%20%7C%203.10-blue.svg?longCache=true)]()
 [![PyPI](https://img.shields.io/pypi/v/throttler.svg)](https://pypi.python.org/pypi/throttler)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/uburuntu/throttler/blob/master/LICENSE)
 
 [![Build Status](https://travis-ci.org/uburuntu/throttler.svg?branch=master)](https://travis-ci.org/uburuntu/throttler)
 [![codecov](https://codecov.io/gh/uburuntu/throttler/branch/master/graph/badge.svg)](https://codecov.io/gh/uburuntu/throttler)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/82679eb03912475c8f7d14ee76ebf96e)](https://app.codacy.com/manual/uburuntu/throttler?utm_source=github.com&utm_medium=referral&utm_content=uburuntu/throttler&utm_campaign=Badge_Grade_Dashboard)
 
 Zero-dependency Python package for easy throttling with asyncio support.
 
