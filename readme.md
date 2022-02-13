@@ -1,10 +1,10 @@
 # Throttler
 
-[![Python](https://img.shields.io/badge/Python-3.6%20%7C%203.7%20%7C%203.8%20%7C%203.9%20%7C%203.10-blue.svg?longCache=true)]()
+[![Python](https://img.shields.io/badge/Python-3.6%20%7C%203.7%20%7C%203.8%20%7C%203.9%20%7C%203.10%20%7C%203.11-blue.svg?longCache=true)]()
 [![PyPI](https://img.shields.io/pypi/v/throttler.svg)](https://pypi.python.org/pypi/throttler)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/uburuntu/throttler/blob/master/LICENSE)
 
-[![Build Status](https://travis-ci.org/uburuntu/throttler.svg?branch=master)](https://travis-ci.org/uburuntu/throttler)
+[![Python Tests](https://github.com/uburuntu/throttler/actions/workflows/tests.yml/badge.svg)](https://github.com/uburuntu/throttler/actions/workflows/tests.yml)
 [![codecov](https://codecov.io/gh/uburuntu/throttler/branch/master/graph/badge.svg)](https://codecov.io/gh/uburuntu/throttler)
 
 Zero-dependency Python package for easy throttling with asyncio support.
