@@ -45,6 +45,7 @@ setuptools.setup(
     url='https://github.com/uburuntu/{}'.format(module_name),
     download_url='https://github.com/uburuntu/{}/archive/master.zip'.format(module_name),
     packages=setuptools.find_packages(exclude=['examples', 'tests']),
+    include_package_data=True,
     install_requires=[],
     extras_require={'dev': load_requirements('requirements-dev.txt')},
     keywords=['asyncio', 'aio-throttle', 'aiothrottle', 'aiothrottler', 'aiothrottling',
