@@ -1,62 +1,81 @@
-import importlib.util
-import os
+"""
+Create the Python package
+"""
+
 import sys
+import os
 
-import setuptools
-from pkg_resources import parse_requirements
+from setuptools import setup, find_packages
 
+from src.async_flow_control import __version__, __license__
 
-def read(filename: str) -> str:
-    with open(filename, encoding='utf-8') as file:
-        return file.read()
+MIN_PYTHON_VERSION = (3, 8)
+PKGNAME = 'async-flow-control'
+GITHUB_URL = 'https://github.com/paulovn/' + PKGNAME
+DESC = '''
+Throttle tasks to spread execution across time and implement flow control, in an asyncio environment
+'''
 
-
-def get_module(name: str):
-    spec = importlib.util.spec_from_file_location(name, os.path.join(name, '__init__.py'))
-    module = importlib.util.module_from_spec(spec)
-    sys.modules[name] = module
-    spec.loader.exec_module(module)
-    return module
+# --------------------------------------------------------------------
 
 
-def load_requirements(filename: str) -> list:
-    requirements = []
-    for req in parse_requirements(read(filename)):
-        extras = '[{}]'.format(','.join(req.extras)) if req.extras else ''
-        requirements.append(
-            '{}{}{}'.format(req.name, extras, req.specifier)
-        )
-    return requirements
+def requirements(filename='requirements.txt'):
+    '''Read the requirements file'''
+    pathname = os.path.join(os.path.dirname(__file__), filename)
+    with open(pathname, 'r') as f:
+        return [line.strip() for line in f if line.strip() and line[0] != '#']
 
 
-module_name = 'throttler'
-module = get_module(module_name)
+# --------------------------------------------------------------------
 
-setuptools.setup(
-    name=module_name,
-    version=module.__version__,
-    author=module.__author__,
-    author_email=module.__email__,
-    license=module.__license__,
-    description=module.__doc__,
-    platforms='all',
-    long_description=read('readme.md'),
-    long_description_content_type='text/markdown',
-    url='https://github.com/uburuntu/{}'.format(module_name),
-    download_url='https://github.com/uburuntu/{}/archive/master.zip'.format(module_name),
-    packages=setuptools.find_packages(exclude=['examples', 'tests']),
-    include_package_data=True,
-    install_requires=[],
-    extras_require={'dev': load_requirements('requirements-dev.txt')},
-    keywords=['asyncio', 'aio-throttle', 'aiothrottle', 'aiothrottler', 'aiothrottling',
-              'asyncio-throttle', 'rate-limit', 'rate-limiter', 'throttling', 'throttle', 'throttler'],
+
+if sys.version_info < MIN_PYTHON_VERSION:
+    sys.exit('**** Sorry, {} {} needs at least Python {}'.format(
+        PKGNAME, __version__, '.'.join(map(str, MIN_PYTHON_VERSION))))
+
+
+setup_args = dict(
+    # Metadata
+    name=PKGNAME,
+    version=__version__,
+    description=DESC.strip(),
+    long_description=DESC,
+    long_description_content_type="text/markdown",
+    license=__license__,
+    url=GITHUB_URL,
+    download_url=GITHUB_URL + '/tarball/v' + __version__,
+    author='Paulo Villegas',
+    author_email='paulo.vllgs@gmail.com',
+
+    # Locate packages
+    packages=find_packages('src'),  # [ PKGNAME ],
+    package_dir={'': 'src'},
+
+    # Optional requirements
+    extras_require={
+        'test': ['nose', 'coverage', 'pytest', 'pytest-asyncio'],
+    },
+
+
+    include_package_data=False,
+    
+    # pytest requirements
+    tests_require=['pytest', 'pytest-asyncio'],
+
+    # More metadata
+    keywords=['throttle', 'throttling', 'rate control', 'asyncio',
+              'rate-limit', 'concurrency-limit'],
     classifiers=[
-        'Development Status :: 5 - Production/Stable',
+        'Programming Language :: Python :: 3 :: Only',
         'Framework :: AsyncIO',
         'Intended Audience :: Developers',
         'Intended Audience :: System Administrators',
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 3',
-        'Typing :: Typed',
-    ],
+        'Development Status :: 4 - Beta',
+        'Topic :: Software Development :: Libraries'
+    ]
 )
+
+
+if __name__ == '__main__':
+    setup(**setup_args)
