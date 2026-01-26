@@ -32,7 +32,7 @@ def throttle_simultaneous(count: int):
     return decorator
 
 
-def execution_timer(period: float = 60., align_sleep: bool = False):
+def execution_timer(period: float = 60.0, align_sleep: bool = False):
     def decorator(func):
         et = ExecutionTimer(period, align_sleep)
 
@@ -46,7 +46,7 @@ def execution_timer(period: float = 60., align_sleep: bool = False):
     return decorator
 
 
-def execution_timer_async(period: float = 60., align_sleep: bool = False):
+def execution_timer_async(period: float = 60.0, align_sleep: bool = False):
     def decorator(func):
         et = ExecutionTimer(period, align_sleep)
 

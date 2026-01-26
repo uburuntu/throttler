@@ -12,7 +12,7 @@ def example():
         My Timer | elapsed: 0.31 sec
     """
 
-    timer = Timer('My Timer')
+    timer = Timer("My Timer")
 
     for _ in range(3):
         with timer:
@@ -30,7 +30,7 @@ def example_verbose():
         #3 | My Timer |   end: 2020-03-26 01:46:09.083370, elapsed: 0.48 sec, average: 0.48 sec
     """
 
-    timer = Timer('My Timer', verbose=True)
+    timer = Timer("My Timer", verbose=True)
 
     for _ in range(3):
         with timer:
