@@ -7,7 +7,7 @@ from throttler import Throttler, ThrottlerSimultaneous
 
 
 class SomeAPI:
-    api_url = 'https://example.com'
+    api_url = "https://example.com"
 
     def __init__(self, throttler):
         self.throttler = throttler
@@ -22,7 +22,7 @@ class SomeAPI:
             coros = [self.request(session) for _ in range(count)]
             for coro in asyncio.as_completed(coros):
                 response = await coro
-                print(f'{int(time.time())} | Result: {response.status}')
+                print(f"{int(time.time())} | Result: {response.status}")
 
 
 def example():

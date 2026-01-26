@@ -8,7 +8,7 @@ from throttler import throttle_simultaneous
 
 class TestThrottlerSimultaneous:
     @pytest.mark.parametrize(
-        ('max_simultaneous', 'count'), ((1, 10), (3, 10), (100, 500))
+        ("max_simultaneous", "count"), ((1, 10), (3, 10), (100, 500))
     )
     def test_via_service_simultaneous(self, max_simultaneous: int, count: int):
         s = ServiceSimultaneous(max_simultaneous)

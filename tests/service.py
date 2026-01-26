@@ -19,13 +19,13 @@ class Service:
         self.rate_limit = rate_limit
         self.period = period - 0.01
 
-        self.times = deque((0.,) * rate_limit)
+        self.times = deque((0.0,) * rate_limit)
 
     async def get(self, value: float):
         curr_ts = time.monotonic()
         diff = curr_ts - self.times[0]
         if diff < self.period:
-            raise BanException('Limit exceeded')
+            raise BanException("Limit exceeded")
         self.times.popleft()
         self.times.append(curr_ts)
         return await sleeper(value)
@@ -41,7 +41,7 @@ class ServiceSimultaneous:
         self.counter += 1
         try:
             if self.counter > self.max_simultaneous:
-                raise BanException('Limit exceeded')
+                raise BanException("Limit exceeded")
             return await sleeper(value)
         finally:
             self.counter -= 1

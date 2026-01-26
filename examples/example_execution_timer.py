@@ -17,7 +17,7 @@ def example():
 
     while True:
         with et:
-            print(time.asctime(), '|', time.time())
+            print(time.asctime(), "|", time.time())
 
 
 def example_async():
@@ -34,6 +34,6 @@ def example_async():
     async def coro():
         while True:
             async with et:
-                print(time.asctime(), '|', time.time())
+                print(time.asctime(), "|", time.time())
 
     asyncio.run(coro())

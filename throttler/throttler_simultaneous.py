@@ -12,7 +12,7 @@ class ThrottlerSimultaneous:
         - https://github.com/uburuntu/throttler/blob/master/examples/example_throttlers_aiohttp.py
     """
 
-    __slots__ = ('_semaphore',)
+    __slots__ = ("_semaphore",)
 
     def __init__(self, count: int):
         self._semaphore = asyncio.Semaphore(count)
