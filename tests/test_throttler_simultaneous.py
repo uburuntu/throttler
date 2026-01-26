@@ -17,5 +17,7 @@ class TestThrottlerSimultaneous:
         async def request(value: float):
             return await s.get(value)
 
-        main = asyncio.gather(*[request(v) for v in range(count)])
-        asyncio.get_event_loop().run_until_complete(main)
+        async def run():
+            await asyncio.gather(*[request(v) for v in range(count)])
+
+        asyncio.run(run())

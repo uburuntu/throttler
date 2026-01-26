@@ -1,6 +1,6 @@
 # Throttler
 
-[![Python](https://img.shields.io/badge/Python-3.6%20%7C%203.7%20%7C%203.8%20%7C%203.9%20%7C%203.10%20%7C%203.11-blue.svg?longCache=true)]()
+[![Python](https://img.shields.io/badge/Python-3.7%20%7C%203.8%20%7C%203.9%20%7C%203.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-blue.svg?longCache=true)]()
 [![PyPI](https://img.shields.io/pypi/v/throttler.svg)](https://pypi.python.org/pypi/throttler)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/uburuntu/throttler/blob/master/LICENSE)
 
@@ -14,6 +14,7 @@ Zero-dependency Python package for easy throttling with asyncio support.
 ## 📝 Table of Contents
 
 - 🎒 [Install](#-install)
+- 🧪 [Development](#-development)
 - 🛠 [Usage Examples](#-usage-examples)
   - [Throttler and ThrottlerSimultaneous](#throttler-and-throttlersimultaneous)
     - [Simple Example](#simple-example)
@@ -29,6 +30,15 @@ Zero-dependency Python package for easy throttling with asyncio support.
 Just
 ```sh
 pip install throttler
+```
+
+## 🧪 Development
+
+```sh
+uv sync --extra dev
+uv run pytest -vl --cov=./ --cov-report=xml
+uv run ruff check .
+uv run ruff format .
 ```
 
 ## 🛠 Usage Examples
