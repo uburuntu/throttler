@@ -1,4 +1,5 @@
 from datetime import datetime
+import time
 from typing import Callable
 
 
@@ -15,6 +16,7 @@ class Timer:
     ):
         self.iteration = 1
         self.start_dt = None
+        self.start_perf = 0.0
         self.elapsed_all = 0.0
 
         self.name = name
@@ -23,6 +25,7 @@ class Timer:
 
     def __enter__(self):
         self.start_dt = datetime.now()
+        self.start_perf = time.perf_counter()
         if self.verbose:
             self.print(
                 f"{f'#{self.iteration}':>5} | {self.name or 'Timer'} | begin: {self.start_dt}"
@@ -30,7 +33,7 @@ class Timer:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         curr_dt = datetime.now()
-        elapsed = (curr_dt - self.start_dt).total_seconds()
+        elapsed = time.perf_counter() - self.start_perf
 
         self.elapsed_all += elapsed
         average = self.elapsed_all / self.iteration

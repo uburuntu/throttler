@@ -3,10 +3,15 @@ import asyncio
 import pytest
 
 from tests.service import ServiceSimultaneous
-from throttler import throttle_simultaneous
+from throttler import ThrottlerSimultaneous, throttle_simultaneous
 
 
 class TestThrottlerSimultaneous:
+    @pytest.mark.parametrize("count", (0, -1, -5))
+    def test_invalid_count(self, count: int):
+        with pytest.raises(ValueError):
+            ThrottlerSimultaneous(count)
+
     @pytest.mark.parametrize(
         ("max_simultaneous", "count"), ((1, 10), (3, 10), (100, 500))
     )

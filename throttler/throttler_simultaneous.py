@@ -15,6 +15,9 @@ class ThrottlerSimultaneous:
     __slots__ = ("_count", "_semaphore")
 
     def __init__(self, count: int):
+        if not (isinstance(count, int) and count > 0):
+            raise ValueError("`count` should be positive integer")
+
         self._count = count
         self._semaphore = None
 
