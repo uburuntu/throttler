@@ -1,0 +1,73 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "throttler"
+description = "Zero-dependency Python package for easy throttling with asyncio support"
+dynamic = ["version"]
+readme = { file = "readme.md", content-type = "text/markdown" }
+license = { file = "LICENSE" }
+authors = [{ name = "uburuntu", email = "github@rmbk.me" }]
+requires-python = ">=3.8"
+keywords = [
+  "asyncio",
+  "aio-throttle",
+  "aiothrottle",
+  "aiothrottler",
+  "aiothrottling",
+  "asyncio-throttle",
+  "rate-limit",
+  "rate-limiter",
+  "throttling",
+  "throttle",
+  "throttler",
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Framework :: AsyncIO",
+  "Intended Audience :: Developers",
+  "Intended Audience :: System Administrators",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Typing :: Typed",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+  "aiohttp",
+  "build",
+  "codecov",
+  "pytest",
+  "pytest-asyncio",
+  "pytest-cov",
+  "ruff",
+]
+
+[project.urls]
+Homepage = "https://github.com/uburuntu/throttler"
+Source = "https://github.com/uburuntu/throttler"
+Download = "https://github.com/uburuntu/throttler/archive/master.zip"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+exclude = ["examples", "tests"]
+
+[tool.setuptools.dynamic]
+version = { attr = "throttler.__version__" }
+
+[tool.ruff]
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E9", "F63", "F7", "F82"]

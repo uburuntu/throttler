@@ -15,9 +15,11 @@ class TestService:
         async def request(value: float):
             return await s.get(value)
 
+        async def run():
+            await asyncio.gather(*[request(v) for v in range(int(rate_limit / period) + 100)])
+
         with pytest.raises(BanException):
-            main = asyncio.gather(*[request(v) for v in range(int(rate_limit / period) + 100)])
-            asyncio.get_event_loop().run_until_complete(main)
+            asyncio.run(run())
 
     @pytest.mark.parametrize(
         ('max_simultaneous',), ((1,), (3,), (100,))
@@ -28,6 +30,8 @@ class TestService:
         async def request(value: float):
             return await s.get(value)
 
+        async def run():
+            await asyncio.gather(*[request(v) for v in range(max_simultaneous + 100)])
+
         with pytest.raises(BanException):
-            main = asyncio.gather(*[request(v) for v in range(max_simultaneous + 100)])
-            asyncio.get_event_loop().run_until_complete(main)
+            asyncio.run(run())
