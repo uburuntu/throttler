@@ -1,7 +1,10 @@
 from functools import wraps
 from typing import Callable
 
-from throttler import ExecutionTimer, Throttler, ThrottlerSimultaneous, Timer
+from .execution_timer import ExecutionTimer
+from .throttler import Throttler
+from .throttler_simultaneous import ThrottlerSimultaneous
+from .timer import Timer
 
 
 def throttle(rate_limit: int, period: float = 1.0):
