@@ -22,7 +22,10 @@ class ExecutionTimer:
     )
 
     def __init__(self, period: float = 60.0, align_sleep: bool = False):
-        self._period = period
+        if not (isinstance(period, (int, float)) and period > 0.0):
+            raise ValueError("`period` should be positive float")
+
+        self._period = float(period)
         self._align_sleep = align_sleep
 
         self._start_time = 0.0
