@@ -6,7 +6,7 @@ from typing import Union
 
 class Throttler:
     """
-    Context manager for limiting rate of accessing to context block.
+    Async context manager that limits how often the block can be entered.
 
     Example usages:
         - https://github.com/uburuntu/throttler/blob/master/examples/example_throttlers.py

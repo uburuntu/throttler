@@ -5,7 +5,9 @@ from typing import Callable
 
 class Timer:
     """
-    Context manager for pretty printing start, end, elapsed and average times.
+    Context manager for printing start, end, elapsed and average times.
+
+    Elapsed timing uses a monotonic clock, while start/end timestamps are wall time.
 
     Example usage:
         - https://github.com/uburuntu/throttler/blob/master/examples/example_timer.py

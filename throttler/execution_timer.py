@@ -4,9 +4,10 @@ import time
 
 class ExecutionTimer:
     """
-    Context manager for time limiting of accessing to context block.
-    Simply sleep `period` secs before next accessing, not analog of Throttler.
-    Also it can align to start of minutes.
+    Context manager that enforces a minimum period between entries by sleeping.
+
+    This is not a rate limiter like Throttler. With align_sleep=True, it aligns
+    to wall-clock boundaries (e.g. each minute).
 
     Example usage:
         - https://github.com/uburuntu/throttler/blob/master/examples/example_execution_timer.py
