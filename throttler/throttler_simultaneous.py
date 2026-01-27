@@ -3,9 +3,7 @@ import asyncio
 
 class ThrottlerSimultaneous:
     """
-    Context manager for limiting simultaneous count of accessing to context block.
-
-    Should be created inside of async loop.
+    Async context manager that limits concurrent access to a block.
 
     Example usages:
         - https://github.com/uburuntu/throttler/blob/master/examples/example_throttlers.py

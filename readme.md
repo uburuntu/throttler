@@ -11,19 +11,6 @@ Zero-dependency Python package for easy throttling with asyncio support.
 
 > ![Demo](https://i.imgur.com/MyAALZt.gif)
 
-## 📝 Table of Contents
-
-- 🎒 [Install](#-install)
-- 🧪 [Development](#-development)
-- 🛠 [Usage Examples](#-usage-examples)
-  - [Throttler and ThrottlerSimultaneous](#throttler-and-throttlersimultaneous)
-    - [Simple Example](#simple-example)
-    - [API Example](#api-example)
-  - [ExecutionTimer](#executiontimer)
-  - [Timer](#timer)
-- 👨🏻‍💻 [Author](#-author)
-- 💬 [Contributing](#-contributing)
-- 📝 [License](#-license)
 
 ## 🎒 Install
 
@@ -35,18 +22,42 @@ pip install throttler
 ## 🧪 Development
 
 ```sh
-uv sync --extra dev
+uv sync --locked --all-extras --dev
 uv run pytest -vl --cov=./ --cov-report=xml
 uv run ruff check .
 uv run ruff format .
+uv run python -m build
 ```
+
+## 📌 API Overview
+
+This package exposes four context managers and six decorators:
+
+- `Throttler` / `throttle`: rate-limits how often a block or async function can be entered.
+- `ThrottlerSimultaneous` / `throttle_simultaneous`: caps how many async calls can run at once.
+- `ExecutionTimer` / `execution_timer`: enforces a minimum period between entries by sleeping.
+- `Timer` / `timer`: prints timing information, including average duration across iterations.
+
+`Throttler` and `ThrottlerSimultaneous` are **async context managers** and must be used within an event loop.
+`ExecutionTimer` and `Timer` support both sync and async usage.
+
+## ✅ Choosing the Right Tool
+
+- Use `Throttler` when you need **rate limiting** (e.g., 10 requests per 1 second).
+- Use `ThrottlerSimultaneous` when you need **concurrency limiting** (e.g., at most 5 in-flight tasks).
+- Use `ExecutionTimer` when you want **fixed spacing** between iterations (e.g., run a job once per minute).
+- Use `Timer` when you want **timing output** for repeated operations.
+
+It is common to combine `Throttler` with `ThrottlerSimultaneous` for APIs that enforce both rate and concurrency.
 
 ## 🛠 Usage Examples
 All run-ready examples are [here](examples).
 
 ### Throttler and ThrottlerSimultaneous
+Both are **async context managers**. Use them inside an async function or event loop.
+
 **Throttler**:
-> Context manager for limiting rate of accessing to context block.
+> Async context manager that limits how often the block can be entered.
 
 ```python
 from throttler import Throttler
@@ -69,7 +80,7 @@ async def task():
 ```
 
 **ThrottlerSimultaneous**:
-> Context manager for limiting simultaneous count of accessing to context block.
+> Async context manager that limits concurrent access to a block.
 
 ```python
 from throttler import ThrottlerSimultaneous
@@ -181,7 +192,7 @@ Result output:
 ```
 
 ### ExecutionTimer
-> Context manager for time limiting of accessing to context block. Simply sleep `period` secs before next accessing, not analog of `Throttler`. Also it can align to start of minutes.
+> Context manager that enforces a minimum period between entries by sleeping. It is not a rate limiter like `Throttler`. With `align_sleep=True`, it aligns to wall-clock boundaries (e.g. each minute).
 
 ```python
 import time
@@ -218,7 +229,7 @@ Thu Mar 26 00:59:00 2020 | 1585173540.001494
 ```
 
 ### Timer
-> Context manager for pretty printing start, end, elapsed and average times.
+> Context manager for pretty printing start, end, elapsed and average times. Elapsed timing uses a monotonic clock, while start/end timestamps are wall-clock time.
 
 ```python
 import random
@@ -258,11 +269,20 @@ Result output:
 #3 | My Timer |   end: 2020-03-26 01:46:09.083370, elapsed: 0.48 sec, average: 0.48 sec
 ```
 
-## 👨🏻‍💻 Author
+## 🧠 Behavior Notes
 
-**Ramzan Bekbulatov**:
-- Telegram: [@rm_bk](https://t.me/rm_bk)
-- Github: [@uburuntu](https://github.com/uburuntu)
+- `Throttler` uses a sliding window. Each entry may sleep until the oldest recorded entry exits the time window.
+- `ThrottlerSimultaneous` uses an async semaphore under the hood.
+- `ExecutionTimer` uses a monotonic clock for waiting; when `align_sleep=True` it aligns to wall time.
+- `Timer` prints elapsed duration per entry and the running average across all entries.
+
+## ⚠️ Error Handling
+
+- `Throttler(rate_limit, period)` requires a positive integer rate and a positive float period.
+- `ThrottlerSimultaneous(count)` requires a positive integer count.
+
+These validations raise `ValueError` early so invalid configuration fails fast.
+
 
 ## 💬 Contributing
 
