@@ -24,3 +24,13 @@ class TestTimer:
 
         for _ in range(3):
             await t()
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(("verbose",), ((True,), (False,)))
+    async def test_timer_decorator_with_async_callable(self, verbose: bool):
+        @timer(name="TestTimer", verbose=verbose)
+        async def t():
+            print(time.time())
+
+        for _ in range(3):
+            await t()
