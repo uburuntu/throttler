@@ -61,7 +61,7 @@ Download = "https://github.com/uburuntu/throttler/archive/master.zip"
 include-package-data = true
 
 [tool.setuptools.packages.find]
-exclude = ["examples", "tests"]
+include = ["throttler"]
 
 [tool.setuptools.dynamic]
 version = { attr = "throttler.__version__" }
